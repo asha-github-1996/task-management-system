@@ -6,6 +6,7 @@ import authRouter from "./routes/authRoute.js";
 import taskRouter from "./routes/taskRoute.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
 
 dotenv.config();
 
@@ -19,16 +20,9 @@ mongoose
     console.log(err);
   });
 
-const app = express();
+const __dirname = path.resolve();
 
-// Use CORS middleware
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // Allow requests from this origin
-//   })
-// );
-// app.use(express.json());
-// app.use(cookieParser());
+const app = express();
 
 app.use(cors());
 app.use(express.json());
@@ -38,6 +32,12 @@ app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/task", taskRouter);
+
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 //Middleware to handle error
 app.use((err, req, res, next) => {
