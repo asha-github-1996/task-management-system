@@ -46,7 +46,7 @@
    5. Run the Express server only by using this command
 
    ```bash
-   cd rtask-management-system
+   cd task-management-system
    npm run dev
    ```
 
